@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Authentication;
-using System.Threading.Tasks;
-using Domain;
+﻿using Domain;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DatingApp.API.Controllers
 {
