@@ -1,11 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import "./app/layout/styles.css";
 import App from "./app/layout/App";
 import * as serviceWorker from "./serviceWorker";
-//import "mobx-react-lite/batchingForReactDom";
+import "mobx-react-lite/batchingForReactDom";
+import ScrollToTop from "./app/layout/ScrollToTop";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <BrowserRouter>
+    <ScrollToTop>
+      <App />
+    </ScrollToTop>
+  </BrowserRouter>,
+  document.getElementById("root")
+);
 // ReactDOM.render(
 //   <React.StrictMode>
 //     <App />
