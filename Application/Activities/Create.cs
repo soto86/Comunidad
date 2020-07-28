@@ -4,7 +4,9 @@ using Persistence;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Interfaces;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Activities
 {
@@ -36,13 +38,14 @@ namespace Application.Activities
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
+            private readonly IUserAccesor _userAccesor;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IUserAccesor userAccesor)
             {
                 _context = context;
+                _userAccesor = userAccesor;
             }
-            public async Task<Unit> Handle(Command request,
-                CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var activity = new Activity
                 {
@@ -54,8 +57,22 @@ namespace Application.Activities
                     City = request.City,
                     Venue = request.Venue
                 };
-                _context.Activities.Add(activity);
-                var success = await _context.SaveChangesAsync() > 0;
+                await _context.Activities.AddAsync(activity, cancellationToken);
+
+                var user = await _context.Users.SingleOrDefaultAsync(x =>
+                    x.UserName == _userAccesor.GetCurrentUserName(), cancellationToken: cancellationToken);
+
+                var attendee = new UserActivity
+                {
+                    AppUser = user,
+                    Activity = activity,
+                    DateJoined = DateTime.Now,
+                    IsHost = true
+                };
+
+                await _context.UserActivities.AddAsync(attendee, cancellationToken);
+
+                var success = await _context.SaveChangesAsync(cancellationToken) > 0;
                 if (success) return Unit.Value;
 
                 throw new Exception("Problem saving changes");
