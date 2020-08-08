@@ -5,11 +5,11 @@ using System.Security.Claims;
 
 namespace Infraestructure.Security
 {
-    public class UserAccesor : IUserAccesor
+    public class UserAccessor : IUserAccessor
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserAccesor(IHttpContextAccessor httpContextAccessor)
+        public UserAccessor(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }

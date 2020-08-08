@@ -1,14 +1,13 @@
-﻿using MediatR;
-using Persistence;
-using System;
-using System.Linq;
+﻿using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Errors;
 using Application.Interfaces;
 using Domain;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.Activities
 {
@@ -18,37 +17,34 @@ namespace Application.Activities
         {
             public Guid Id { get; set; }
         }
+
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
-            private readonly IUserAccesor _userAccesor;
-
-            public Handler(DataContext context, IUserAccesor userAccesor)
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _context = context;
-                _userAccesor = userAccesor;
             }
-            public async Task<Unit> Handle(Command request,
-                CancellationToken cancellationToken)
+
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var activity = await _context.Activities.FindAsync(request.Id);
+
                 if (activity == null)
-                {
-                    throw new RestException(HttpStatusCode.NotFound, 
-                        new {Activity = "Could not found activity"});
-                }
+                    throw new RestException(HttpStatusCode.NotFound, new { Activity = "Cound not find activity" });
 
                 var user = await _context.Users.SingleOrDefaultAsync(x =>
-                    x.UserName == _userAccesor.GetCurrentUserName(), cancellationToken);
+                    x.UserName == _userAccessor.GetCurrentUserName());
 
-                var attendance =
-                    await _context.UserActivities.SingleOrDefaultAsync(x =>
-                        x.ActivityId == activity.Id && x.AppUserId == user.Id, cancellationToken);
+                var attendance = await _context.UserActivities
+                    .SingleOrDefaultAsync(x => x.ActivityId == activity.Id &&
+                        x.AppUserId == user.Id);
 
                 if (attendance != null)
-                {
-                    throw new RestException(HttpStatusCode.BadRequest);
-                }
+                    throw new RestException(HttpStatusCode.BadRequest,
+                        new { Attendance = "Already attending this activity" });
 
                 attendance = new UserActivity
                 {
@@ -58,9 +54,9 @@ namespace Application.Activities
                     DateJoined = DateTime.Now
                 };
 
-                await _context.UserActivities.AddAsync(attendance, cancellationToken);
+                _context.UserActivities.Add(attendance);
 
-                var success = await _context.SaveChangesAsync(cancellationToken) > 0;
+                var success = await _context.SaveChangesAsync() > 0;
 
                 if (success) return Unit.Value;
 

@@ -1,10 +1,10 @@
-using System.Text;
 using API.MIddleware;
 using Application.Activities;
 using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using FluentValidation.AspNetCore;
+using Infraestructure.Photos;
 using Infraestructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
+using System.Text;
 
 namespace API
 {
@@ -91,7 +92,9 @@ namespace API
                 });
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<IUserAccesor, UserAccesor>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

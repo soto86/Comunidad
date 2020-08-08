@@ -1,4 +1,5 @@
-﻿using Application.Errors;
+﻿using System.Linq;
+using Application.Errors;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -60,7 +61,7 @@ namespace Application.User
                         DisplayName = user.DisplayName,
                         Token = _jwtGenerator.CreateToken(user),
                         Username = user.UserName,
-                        Image = null
+                        Image = user.Photos.FirstOrDefault(x=>x.IsMain)?.Url
                     };
                 }
 
