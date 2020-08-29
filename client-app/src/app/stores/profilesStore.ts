@@ -97,4 +97,21 @@ export default class ProfileStore {
       });
     }
   };
+
+  @action updateProfile = async (profile: Partial<IProfile>) => {
+    await agent.Profiles.updateProfile(profile);
+
+    try {
+      runInAction(() => {
+        if (
+          profile.displayName !== this.rootStore.userStore.user!.displayName
+        ) {
+          this.rootStore.userStore.user!.displayName = profile.displayName!;
+        }
+        this.profile = { ...this.profile!, ...profile };
+      });
+    } catch (error) {
+      toast.error("Problem Updating profile");
+    }
+  };
 }

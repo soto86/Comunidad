@@ -29,7 +29,7 @@ namespace Application.Profiles
                     SingleOrDefaultAsync(x => x.UserName == request.Username);
                 return new Profile
                 {
-                    DisplayName = user.UserName,
+                    DisplayName = user.DisplayName,
                     Username = user.UserName,
                     Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                     Photos = user.Photos,
