@@ -9,6 +9,10 @@
     <Compile Remove="Migrations\20200513193241_SeedValues.Designer.cs" />
     <Compile Remove="Migrations\20200513193817_Seeds.cs" />
     <Compile Remove="Migrations\20200513193817_Seeds.Designer.cs" />
+    <Compile Remove="Migrations\20200829201158_AddedCommentEntity.cs" />
+    <Compile Remove="Migrations\20200829201158_AddedCommentEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200829212703_AddedCommentEntity.cs" />
+    <Compile Remove="Migrations\20200829212703_AddedCommentEntity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
