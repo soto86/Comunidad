@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Application.Errors;
 
-namespace API.MIddleware
+namespace API.Middleware
 {
     public class ErrorHandlingMiddleware
     {

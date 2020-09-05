@@ -5,7 +5,7 @@ using Application.Comments;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
-namespace API.SIgnalR
+namespace API.SignalR
 {
     public class ChatHub : Hub
     {

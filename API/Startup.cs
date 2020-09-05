@@ -1,6 +1,8 @@
-using API.MIddleware;
+using API.Middleware;
+using API.SignalR;
 using Application.Activities;
 using Application.Interfaces;
+using Application.Profiles;
 using AutoMapper;
 using Domain;
 using FluentValidation.AspNetCore;
@@ -21,7 +23,6 @@ using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using System.Text;
 using System.Threading.Tasks;
-using API.SIgnalR;
 
 namespace API
 {
@@ -42,7 +43,7 @@ namespace API
                 opt.UseLazyLoadingProxies();
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
-                
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
@@ -108,6 +109,8 @@ namespace API
                     };
                 });
 
+            //services.AddScoped(typeof(List.Handler), typeof(List.Handler));
+            services.AddScoped<IProfileReader, ProfileReader>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
