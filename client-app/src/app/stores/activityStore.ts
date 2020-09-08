@@ -11,7 +11,6 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from "@microsoft/signalr";
-import { Message } from "semantic-ui-react";
 
 export default class ActivityStore {
   rootStore: RootStore;

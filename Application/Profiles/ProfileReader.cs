@@ -40,7 +40,7 @@ namespace Application.Profiles
                 Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 Photos = user.Photos,
                 Bio = user.Bio,
-                FollowerCount = user.Followers.Count,
+                FollowersCount = user.Followers.Count,
                 FollowingCount = user.Followings.Count,
             };
 

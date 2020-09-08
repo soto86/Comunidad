@@ -14,7 +14,7 @@ namespace Application.Profiles
         [JsonPropertyName("following")]
         public bool IsFollowed { get; set; }
         public int FollowingCount { get; set; }
-        public int FollowerCount { get; set; }
+        public int FollowersCount { get; set; }
         public virtual ICollection<Photo> Photos { get; set; }
     }
 }

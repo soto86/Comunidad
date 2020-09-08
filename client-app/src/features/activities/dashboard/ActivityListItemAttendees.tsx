@@ -6,6 +6,11 @@ interface Iprops {
   attendees: IAttendee[];
 }
 
+const styles = {
+  borderColor: "orange",
+  borderwidth: 2,
+};
+
 const ActivityListItemAttendees: React.FC<Iprops> = ({ attendees }) => {
   return (
     <List horizontal>
@@ -18,6 +23,8 @@ const ActivityListItemAttendees: React.FC<Iprops> = ({ attendees }) => {
                 size="mini"
                 circular
                 src={attendee.image || "/assets/user.png"}
+                bordered
+                style={attendee.following ? styles : null}
               />
             }
           />
