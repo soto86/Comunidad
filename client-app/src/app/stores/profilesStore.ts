@@ -83,6 +83,7 @@ export default class ProfileStore {
   @action setMainPhoto = async (photo: IPhoto) => {
     this.loading = true;
     try {
+      await agent.Profiles.setMainPhoto(photo.id);
       runInAction(() => {
         this.rootStore.userStore.user!.image = photo.url;
         this.profile!.photos.find((a) => a.isMain)!.isMain = false;

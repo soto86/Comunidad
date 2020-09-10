@@ -33,12 +33,12 @@ namespace Application.Followers
                 var observer = await _context.Users.SingleOrDefaultAsync(x
                     => x.UserName == _userAccessor.GetCurrentUserName(), cancellationToken: cancellationToken);
 
-                var target = await _context.Users.SingleOrDefaultAsync(x 
+                var target = await _context.Users.SingleOrDefaultAsync(x
                     => x.UserName == request.Username, cancellationToken: cancellationToken);
 
-                if (target == null) 
+                if (target == null)
                 {
-                    throw new  RestException(HttpStatusCode.NotFound, new {User = "Not found"});
+                    throw new RestException(HttpStatusCode.NotFound, new { User = "Not found" });
                 }
 
                 var following = await _context.Followings.SingleOrDefaultAsync(x
@@ -46,13 +46,14 @@ namespace Application.Followers
 
                 if (following != null)
                     throw new RestException(HttpStatusCode.BadRequest,
-                        new {User = "Yoy are already following this user."});
+                        new { User = "Yoy are already following this user." });
 
                 following = new UserFollowing
                 {
                     Observer = observer,
                     Target = target
                 };
+
                 _context.Followings.Add(following);
 
                 var success = await _context.SaveChangesAsync(cancellationToken: cancellationToken) > 0;
